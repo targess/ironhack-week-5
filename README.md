@@ -8,3 +8,6 @@ jQuery
 - Examples - jQuery
 - PPChallenge - Pizza builder
 - Final Exercise - jQuery examples
+
+**Day 2:**
+- Exercise - Ajax and DOM
