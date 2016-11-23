@@ -11,3 +11,9 @@ jQuery
 
 **Day 2:**
 - Exercise - Ajax and DOM
+- Final Exercise - Spotify Artist Search
+
+**Day 3:**
+- Exercise - Geolocation
+- Exercise - LocalStorage
+- Final Exercise - Places Ive Been
