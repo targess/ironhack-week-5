@@ -29,7 +29,7 @@ function printAllTracks(myTracks) {
 		data-track-author-name="${track.artists[0].name}" 
 		data-track-author-id="${track.artists[0].id}"
 		data-track-author-img="${track.album.images[0].url}"
-		data-track-url="${track.preview_url}">${track.name}</li>`
+		data-track-url="${track.preview_url}">${track.name} - ${track.artists[0].name}</li>`
 
 		$('.js-list-tracks').append(html);
 	});
@@ -107,7 +107,12 @@ $(document).on ("ready", function(){
 		$('.js-modal-tracks').modal('show');
 
 		$('li').on ('click', function(event){
+
+			console.log($(event.target).data('author-name'));
 			$('.widget .title').html($(event.target).data('track-name'));
+			$('.widget .author').html($(event.target).data('track-author-name'));
+			$('.widget .author').data('author-id', $(event.target).data('track-author-id'));
+			$('.widget .cover img').attr('src', $(event.target).data('track-author-img'));
 			$('.js-player').attr('src', $(event.target).data('track-url'));
 			$('.js-modal-tracks').modal('hide');
 			if ($('.js-play').hasClass('playing')) {togglePlayButton()};
