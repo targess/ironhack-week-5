@@ -22,7 +22,15 @@ function printAllTracks(myTracks) {
 	$('.js-list-tracks').empty();
 
 	myTracks.forEach(function(track){
-		html = `<li class="list-group-item" data-track-name="${track.name}" data-track-id="${track.id}" data-track-url="${track.preview_url}">${track.name}</li>`
+		console.log(track)
+		html = `<li class="list-group-item" 
+		data-track-name="${track.name}" 
+		data-track-id="${track.id}"
+		data-track-author-name="${track.artists[0].name}" 
+		data-track-author-id="${track.artists[0].id}"
+		data-track-author-img="${track.album.images[0].url}"
+		data-track-url="${track.preview_url}">${track.name}</li>`
+
 		$('.js-list-tracks').append(html);
 	});
 };
@@ -61,12 +69,25 @@ function getAuthorInfo() {
 	});
 };
 
+function togglePlayButton() {
+	var $playerButton = $('.js-play');
+	if ($playerButton.hasClass('disabled')) {
+		$playerButton.removeClass('disabled');
+		$playerButton.addClass('playing');
+		$('.js-player').trigger('play');
+	} else if ($playerButton.hasClass('playing')) {
+		$playerButton.removeClass('playing');
+		$playerButton.addClass('disabled');
+		$('.js-player').trigger('pause');			
+	}
+};
+
 
 $(document).on ("ready", function(){
 	console.log("on document ready");
 	$('.js-searcher').on ("click", function(event){
-		console.log("on button click");
 		event.preventDefault();
+
 		var searchValue = $('[data-search]').val();
 
 		$.ajax({
@@ -76,20 +97,7 @@ $(document).on ("ready", function(){
 		});
 	});
 
-	$('.js-play').on ('click', function(){
-		console.log("on player click");
-		var $playerButton = $('.js-play');
-			if ($playerButton.hasClass('disabled')) {
-				$playerButton.removeClass('disabled');
-				$playerButton.addClass('playing');
-				$('.js-player').trigger('play');
-			} else if ($playerButton.hasClass('playing')) {
-				$playerButton.removeClass('playing');
-				$playerButton.addClass('disabled');
-				$('.js-player').trigger('pause');			
-
-		}
-	});
+	$('.js-play').on ('click', togglePlayButton);
 
 	$('.js-player').on('timeupdate', printTime);
 
@@ -99,12 +107,10 @@ $(document).on ("ready", function(){
 		$('.js-modal-tracks').modal('show');
 
 		$('li').on ('click', function(event){
-			console.log("on track click");
-			console.log($(event.target));
-			console.log($(event.target).data('track-url'));
 			$('.widget .title').html($(event.target).data('track-name'));
 			$('.js-player').attr('src', $(event.target).data('track-url'));
 			$('.js-modal-tracks').modal('hide');
+			if ($('.js-play').hasClass('playing')) {togglePlayButton()};
 		});
 	});
 
