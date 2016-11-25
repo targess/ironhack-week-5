@@ -21,4 +21,5 @@ jQuery
 **Day 4:**
 - Exercise - Pokemon Components
 
-
+**Day 5:**
+- Exercise - Spotify Player
