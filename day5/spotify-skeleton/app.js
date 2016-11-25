@@ -5,13 +5,26 @@ function handleErrors(errors) {
 function getTracks(myTracks) {
 	firstTrack = myTracks.tracks.items[0];
 
-	console.log(firstTrack);
-	$('.widget .title').html(firstTrack.name);
-	$('.widget .author').html(firstTrack.artists[0].name);
-	$('.widget .author').data('author-id', firstTrack.artists[0].id);
-	$('.widget .cover img').attr('src', firstTrack.album.images[0].url);
-	$('.js-player').attr('src', firstTrack.preview_url);
+	printTrack(firstTrack);
+	printAllTracks(myTracks.tracks.items);
+};
 
+function printTrack(track) {
+
+	$('.widget .title').html(track.name);
+	$('.widget .author').html(track.artists[0].name);
+	$('.widget .author').data('author-id', track.artists[0].id);
+	$('.widget .cover img').attr('src', track.album.images[0].url);
+	$('.js-player').attr('src', track.preview_url);
+};
+
+function printAllTracks(myTracks) {
+	$('.js-list-tracks').empty();
+
+	myTracks.forEach(function(track){
+		html = `<li class="list-group-item" data-track-name="${track.name}" data-track-id="${track.id}" data-track-url="${track.preview_url}">${track.name}</li>`
+		$('.js-list-tracks').append(html);
+	});
 };
 
 function printTime() {
@@ -21,7 +34,7 @@ function printTime() {
 
 function printAuthorModal(response) {
 	console.log("on print author modal");
-	
+
 	var name		 = response.name;
 	var photo		 = response.images[0].url;
 	var genres		 = response.genres.map(function(element){ return element}).toString();
@@ -63,7 +76,7 @@ $(document).on ("ready", function(){
 		});
 	});
 
-	$('.js-play').on ("click", function(){
+	$('.js-play').on ('click', function(){
 		console.log("on player click");
 		var $playerButton = $('.js-play');
 			if ($playerButton.hasClass('disabled')) {
@@ -81,5 +94,18 @@ $(document).on ("ready", function(){
 	$('.js-player').on('timeupdate', printTime);
 
 	$('.js-author').on('click', getAuthorInfo);
+
+	$('.js-show-more').on('click', function(){
+		$('.js-modal-tracks').modal('show');
+
+		$('li').on ('click', function(event){
+			console.log("on track click");
+			console.log($(event.target));
+			console.log($(event.target).data('track-url'));
+			$('.widget .title').html($(event.target).data('track-name'));
+			$('.js-player').attr('src', $(event.target).data('track-url'));
+			$('.js-modal-tracks').modal('hide');
+		});
+	});
 
 });
