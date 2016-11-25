@@ -17,3 +17,8 @@ jQuery
 - Exercise - Geolocation
 - Exercise - LocalStorage
 - Final Exercise - Places Ive Been
+
+**Day 4:**
+- Exercise - Pokemon Components
+
+
